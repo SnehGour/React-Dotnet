@@ -11,7 +11,7 @@ using Server.Data;
 namespace Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220508204742_Initial")]
+    [Migration("20220510140540_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,7 +49,7 @@ namespace Server.Migrations
 
                     b.HasKey("AddressId");
 
-                    b.ToTable("Address");
+                    b.ToTable("addresses");
                 });
 
             modelBuilder.Entity("Server.Model.Users", b =>

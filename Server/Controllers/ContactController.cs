@@ -22,9 +22,15 @@ namespace Server.Controllers
             {
                 return BadRequest(new {message = "Please enter the values"});
             }
-            if(!ModelState.IsValid)
+
+             var address = user.Address;
+             var obj =  _db.addresses.FirstOrDefault(x => x.State.ToLower() == address.State.ToLower()
+                && x.Town.ToLower() == address.Town.ToLower() && x.Country.ToLower() == address.Country.ToLower()
+                && x.Pincode.ToLower() == address.Pincode.ToLower());
+            
+            if(obj != null)
             {
-                return BadRequest(new { message = "Please enter all the values properly" });
+                user.Address = obj;
             }
             _db.contacts.Add(user);
             _db.SaveChanges();
@@ -35,7 +41,12 @@ namespace Server.Controllers
         public IActionResult getAllContact()
         {
             var contactList =  _db.contacts.ToList();
-            
+            foreach(var contact in contactList)
+            {
+                var addressId = contact.AddressId;
+                 var address = _db.addresses.Find(addressId);
+                contact.Address = address;
+            }
             return Ok(contactList);
         }
 
@@ -50,6 +61,14 @@ namespace Server.Controllers
             return Ok(contact);
         }
 
+        [HttpDelete("{id:int}")]
+        public IActionResult deleteContact(int id)
+        {
+            var obj = _db.contacts.Find(id);
+            _db.contacts.Remove(obj);
+            _db.SaveChanges();
+            return Ok(obj);
+        }
 /*        [HttpPatch("updateContact")]
         public IActionResult updateContact([FromBody] int Id,[FromBody] Users users )
         {

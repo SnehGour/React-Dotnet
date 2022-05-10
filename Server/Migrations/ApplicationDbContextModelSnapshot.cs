@@ -47,7 +47,7 @@ namespace Server.Migrations
 
                     b.HasKey("AddressId");
 
-                    b.ToTable("Address");
+                    b.ToTable("addresses");
                 });
 
             modelBuilder.Entity("Server.Model.Users", b =>

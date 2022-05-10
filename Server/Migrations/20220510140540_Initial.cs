@@ -9,7 +9,7 @@ namespace Server.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Address",
+                name: "addresses",
                 columns: table => new
                 {
                     AddressId = table.Column<int>(type: "int", nullable: false)
@@ -21,7 +21,7 @@ namespace Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Address", x => x.AddressId);
+                    table.PrimaryKey("PK_addresses", x => x.AddressId);
                 });
 
             migrationBuilder.CreateTable(
@@ -40,9 +40,9 @@ namespace Server.Migrations
                 {
                     table.PrimaryKey("PK_contacts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_contacts_Address_AddressId",
+                        name: "FK_contacts_addresses_AddressId",
                         column: x => x.AddressId,
-                        principalTable: "Address",
+                        principalTable: "addresses",
                         principalColumn: "AddressId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -59,7 +59,7 @@ namespace Server.Migrations
                 name: "contacts");
 
             migrationBuilder.DropTable(
-                name: "Address");
+                name: "addresses");
         }
     }
 }
