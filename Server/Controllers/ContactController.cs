@@ -58,6 +58,8 @@ namespace Server.Controllers
             {
                 return NotFound();
             }
+            var address = _db.addresses.Find(contact.AddressId);
+            contact.Address = address;
             return Ok(contact);
         }
 
