@@ -11,5 +11,6 @@ namespace Server.Data
 
         public DbSet<Users> contacts { get; set; }
         public DbSet<Address> addresses { get; set; }
+        public DbSet<UserAuthentication> userAuthentications { get; set; }
     }
 }

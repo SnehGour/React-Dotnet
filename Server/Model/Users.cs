@@ -22,4 +22,12 @@ namespace Server.Model
         public Address Address { get; set; }
 
     }
+    public enum TypeOfContact
+    {
+        Work,
+        Friend,
+        Relative,
+        Family,
+        other,
+    }
 }

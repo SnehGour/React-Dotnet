@@ -59,3 +59,4 @@ C:\Users\snehg\OneDrive\Desktop\GettingPowerFull\React+Dotnet\Contact-Keeper\Ser
 C:\Users\snehg\OneDrive\Desktop\GettingPowerFull\React+Dotnet\Contact-Keeper\Server\obj\Debug\net6.0\ref\Server.dll
 C:\Users\snehg\OneDrive\Desktop\GettingPowerFull\React+Dotnet\Contact-Keeper\Server\obj\Debug\net6.0\Server.pdb
 C:\Users\snehg\OneDrive\Desktop\GettingPowerFull\React+Dotnet\Contact-Keeper\Server\obj\Debug\net6.0\Server.genruntimeconfig.cache
+C:\Users\snehg\OneDrive\Desktop\GettingPowerFull\React+Dotnet\Contact-Keeper\Server\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
