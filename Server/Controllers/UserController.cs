@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Server.Data;
 using Server.Model;
@@ -25,9 +26,9 @@ namespace Server.Controllers
 
         [AllowAnonymous]
         [HttpPost("Authenticate")]
-        public IActionResult Authenticate([FromBody] UserAuthentication user) 
+        public async Task<ActionResult> Authenticate([FromBody] UserAuthentication user) 
         {
-            var Obj = _db.userAuthentications.Any(x=>x.UserName == user.UserName && x.Password == user.Password); 
+            var Obj =await _db.userAuthentications.AnyAsync(x=>x.UserName == user.UserName && x.Password == user.Password); 
             if(!Obj)
             {
                 return BadRequest(new { message = "Invalid Username and Password" });
@@ -63,13 +64,13 @@ namespace Server.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult register([FromBody] UserAuthentication user)
+        public async Task<ActionResult> register([FromBody] UserAuthentication user)
         {
             if(user == null)
             {
                 return BadRequest(new { messsage = "Please enter information properly" });
             }
-            if (!_db.userAuthentications.Any(x => x.UserName == user.UserName && x.Password == user.Password))
+            if (!await _db.userAuthentications.AnyAsync(x => x.UserName == user.UserName && x.Password == user.Password))
             {
                 _db.userAuthentications.Add(user);
                 _db.SaveChanges();
@@ -78,9 +79,9 @@ namespace Server.Controllers
         }
 
         [HttpGet("getAllUsers")]
-        public IActionResult getAllUsers()
+        public async Task<ActionResult> getAllUsers()
         {
-            var userList = _db.userAuthentications.ToList();
+            var userList = await _db.userAuthentications.ToListAsync();
             return Ok(userList);
         }
     }

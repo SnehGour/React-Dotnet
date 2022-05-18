@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Server.Data;
 using Server.Model;
 
 namespace Server.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ContactController : ControllerBase
@@ -38,36 +41,36 @@ namespace Server.Controllers
         }
 
         [HttpGet("getAllContact")]
-        public IActionResult getAllContact()
+        public async Task<ActionResult> getAllContact()
         {
-            var contactList =  _db.contacts.ToList();
+            var contactList = await _db.contacts.ToListAsync();
             foreach(var contact in contactList)
             {
                 var addressId = contact.AddressId;
-                 var address = _db.addresses.Find(addressId);
+                 var address =await _db.addresses.FindAsync(addressId);
                 contact.Address = address;
             }
             return Ok(contactList);
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult getContactById(int id)
+        public async Task<ActionResult> getContactById(int id)
         {
-            var contact = _db.contacts.Find(id);
+            var contact =await _db.contacts.FindAsync(id);
             if(contact == null)
             {
                 return NotFound();
             }
-            var address = _db.addresses.Find(contact.AddressId);
+            var address =await _db.addresses.FindAsync(contact.AddressId);
             contact.Address = address;
             return Ok(contact);
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult deleteContact(int id)
+        public async Task<ActionResult> deleteContact(int id)
         {
-            var obj = _db.contacts.Find(id);
-            _db.contacts.Remove(obj);
+            var obj = await _db.contacts.FindAsync(id);
+             _db.contacts.Remove(obj);
             _db.SaveChanges();
             return Ok(obj);
         }

@@ -19,12 +19,26 @@ export const ContactProvider = ({ children }) => {
     const  getAllContacts =  async () => {
         setLoading()
 
-        const { data } = await axios.get("https://localhost:7010/api/Contact/getAllContact")
+        try {
+            var token = localStorage.getItem('token')
+            const config ={
+                headers:{
+                    'Content-Type':'application/json',
+                    'Authorization': `Bearer ${token}`                }
+            }
+            const { data } = await axios.get("https://localhost:7010/api/Contact/getAllContact",config)
         
         dispatch({
             type: 'GET_ALL_CONTACTS',
             payload: data,
         })
+        } catch (err) {
+
+            dispatch({
+                type:'FETCH_ERROR',
+                payload:err.message.response
+            })
+        }
     }
 
 
@@ -35,7 +49,8 @@ export const ContactProvider = ({ children }) => {
         <ContactContext.Provider value={{
             contacts: state.contacts,
             loading:state.loading,
-            getAllContacts
+            getAllContacts,
+            setLoading
         }}>
             {children}
         </ContactContext.Provider>

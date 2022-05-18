@@ -30,9 +30,11 @@ const Create = () => {
     }
 
     const onSubmit = async (values) => {
+        console.log("THis is from LS",localStorage.getItem('token'))
         const config = {
             Headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization':  `Bearer ${localStorage.getItem('token')}`
             }
         }
 
