@@ -10,10 +10,8 @@
 }
 
 .edit-card{
-width: 100vh;
-margin-left:  auto;
-margin-right:  auto;
-margin-top: 20vh;
+  margin-top: 10%;
+justify-content: center;
 }
 input{
   border: black 2px solid !important;
