@@ -11,7 +11,7 @@ const initialState = {
     userInfo: {
         username: null,
         password: null,
-        token:null
+        token: null
     },
     loading: false
 }
@@ -22,8 +22,8 @@ const UserContext = createContext(initialState)
 const UsersProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(UserReducer, initialState)
-    
-    // Actions
+
+    //1. Authenticate
     const authenticate = async (userInfo) => {
         setLoading()
         try {
@@ -31,27 +31,45 @@ const UsersProvider = ({ children }) => {
                 'Content-Type': 'application/json'
             }
             const { data } = await axios.post('https://localhost:7010/api/User/Authenticate', userInfo, header)
-            localStorage.setItem('token',data.token)
-            
-            const userData ={
-                username:userInfo.username,
-                password:userInfo.password,
-                token:data.token
+            localStorage.setItem('token', data.token)
+
+            const userData = {
+                username: userInfo.username,
+                password: userInfo.password,
+                token: data.token
             }
 
             dispatch({
-                type:'USER_AUTHENTICATE',
-                payload:userData
+                type: 'USER_AUTHENTICATE',
+                payload: userData
             })
-            
+
         } catch (error) {
-                dispatch({
-                    type:'FETCH_ERROR',
-                    payload:error.message.response
-                })
+            dispatch({
+                type: 'FETCH_ERROR',
+                payload: error.message.response
+            })
         }
     }
 
+
+    // 2. Regsiter
+
+    const register = async userData => {
+        setLoading()
+        try {
+            const config = {
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            }
+            const res = await axios.post(`https://localhost:7010/api/User/register`,userData,config);
+            console.log(res)
+
+        } catch (err) {
+            
+        }
+    }
     const setLoading = () => {
         dispatch({ type: 'SET_LOADING' })
     }
@@ -59,12 +77,13 @@ const UsersProvider = ({ children }) => {
         <UserContext.Provider value={{
             userInfo: state.userInfo,
             loading: state.loading,
-            authenticate
-            
+            authenticate,
+            register
+
         }}>
             {children}
         </UserContext.Provider>
     )
 }
 
-export {UserContext,UsersProvider}
+export { UserContext, UsersProvider }

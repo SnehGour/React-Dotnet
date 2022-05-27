@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/userAuth/UserContext'
@@ -9,21 +9,6 @@ const Login = () => {
 
   const navigate = useNavigate()
   const { authenticate, loading, userInfo } = useContext(UserContext)
-  const { alert, setAlert } = useContext(AlertContext)
-
-
-  useEffect(() => {
-    if (userInfo.token) {
-      navigate("/")
-    }
-    else {
-      const alertData ={
-        msg : "Invalid Username and Password",
-        type: 'danger'
-      }
-      setAlert(alertData)
-    }
-  }, [authenticate])
   
   const initialValues = {
     username: '',
@@ -41,7 +26,11 @@ const Login = () => {
   }
 
   const onSubmit = (values) => {
-    authenticate(values)
+    authenticate(values).then(()=>{
+      console.log(userInfo.token,"Yeh hai token!")
+      userInfo.token !== null && navigate('/') 
+    })
+
   }
 
   if (loading) {
@@ -60,10 +49,10 @@ const Login = () => {
               initialValues={initialValues}
               validate={validationSchema}
               onSubmit={onSubmit}
-
+              
               className="card-body">
-              {({ isSubmmiting,handleSubmit,values }) => (
-                <Form onSubmit={(e)=>{e.preventDefault(); authenticate(values)}}>
+              {({ isSubmmiting}) => (
+                <Form>
                   <h5 className="card-title">Username</h5>
                   <Field className='form-control' name='username' />
                   <ErrorMessage name='username' >
@@ -73,7 +62,7 @@ const Login = () => {
                   </ErrorMessage>
 
                   <h5 className="card-title">Password</h5>
-                  <Field className='form-control' name='password' />
+                  <Field className='form-control' name='password' type="password"/>
                   <ErrorMessage name='password' >
                     {
                       (errorMsg) => <div className='errors'>{errorMsg}</div>
