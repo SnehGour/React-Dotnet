@@ -6,16 +6,19 @@ import Spinner from './Spinner'
 
 const ContactList = () => {
     const { getAllContacts, contacts ,loading} = useContext(ContactContext)
+    const [load,setLoad] = useState(true)
     useEffect(() => {
-        console.log("1")
         getAllContacts()
+        .then(()=>{
+            setLoad(false)
+        })
     }, [])
 
     const contactList = contacts.map(user => (
         <ContactCard key={user.id} user={user} />
     ))
     
-        if (loading ) {
+        if (load) {
             return <Spinner />
         } 
         

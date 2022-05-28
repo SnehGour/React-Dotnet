@@ -11,6 +11,16 @@ const ContactReducer = (state, action) => {
                 contacts: action.payload,
                 loading: false
             }
+        case 'ADD_CONTACT':
+            return{
+                ...state,
+                loading:false
+            }
+        case 'DELETE_CONTACT':
+            return{
+                ...state,
+                loading:false
+            }
         case 'FETCH_ERROR':
             return {
                 ...state,

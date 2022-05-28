@@ -1,12 +1,17 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as yup from 'yup'
+import { ContactContext } from '../context/contact/ContactContext'
 
 const Create = () => {
-
+    
     const navigate = useNavigate();
+    useEffect(()=>{
+        localStorage.getItem('token') === null && navigate("/login") 
+    },[])
+    const {addContact} = useContext(ContactContext)
 
     const validationSchema = yup.object({
         name: yup.string().required('Name is required'),
@@ -30,14 +35,6 @@ const Create = () => {
     }
 
     const onSubmit = async (values) => {
-        console.log("THis is from LS",localStorage.getItem('token'))
-        const config = {
-            Headers: {
-                'Content-Type': 'application/json',
-                'Authorization':  `Bearer ${localStorage.getItem('token')}`
-            }
-        }
-
         const data = {
             name: values.name,
             email: values.email,
@@ -50,9 +47,9 @@ const Create = () => {
             },
             realtion: values.realtion
         }
-        console.log(data)
-        const res = await axios.post(`https://localhost:7010/api/Contact/addContact`, data, config)
-        navigate(`/`);
+        addContact(data).then(()=>{
+            navigate(`/`);
+        })
     }
     return (
         <>

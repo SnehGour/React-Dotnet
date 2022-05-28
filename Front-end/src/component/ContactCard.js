@@ -1,29 +1,25 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ContactContext } from '../context/contact/ContactContext';
 const ContactCard = ({ user }) => {
-    
+
     const navigate = useNavigate();
+
+    const { deletContact, getAllContacts } = useContext(ContactContext)
     const style = {
         width: '18rem',
         padding: '8px',
         margin: '8px'
     }
 
-    function navigateHome(){
-        navigate('/');
-    }
-    const  HandlDelete = async (id) =>{
+    const HandlDelete = async (id) => {
         var ans = window.confirm('Are you sure you want to delete ?');
-        if(ans)
-        {
-            const res= await axios.delete(`https://localhost:7010/api/Contact/${id}`)
-            if(res!==null)
-            {
-                navigateHome();
-            }
+        if (ans) {
+            deletContact(id).
+                then(()=>getAllContacts())
         }
-    } 
+    }
 
     return (
         <div className="card" style={style}>
@@ -38,8 +34,8 @@ const ContactCard = ({ user }) => {
                 <li className="list-group-item fw-light text-center">{user.address.town} | {user.address.pincode}</li>
             </ul>
             <div>
-                <button type="button" className="btn btn-info btn-sm mt-2 " onClick={()=>navigate(`/edit/${user.id}`)}><i className="fa-solid fa-pencil"></i> &nbsp; Info</button>
-                <button type="button" className="btn btn-danger btn-sm float-end mt-2" onClick={()=>{HandlDelete(user.id)}}><i className="fa-solid fa-trash "></i>&nbsp; Delete</button>
+                <button type="button" className="btn btn-info btn-sm mt-2 " onClick={() => navigate(`/edit/${user.id}`)}><i className="fa-solid fa-pencil"></i> &nbsp; Info</button>
+                <button type="button" className="btn btn-danger btn-sm float-end mt-2" onClick={() => { HandlDelete(user.id) }}><i className="fa-solid fa-trash "></i>&nbsp; Delete</button>
             </div>
         </div>
     )

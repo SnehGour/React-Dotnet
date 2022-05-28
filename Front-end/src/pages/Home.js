@@ -6,12 +6,8 @@ import Header from '../component/Header'
 const Home = () => {
 
     const navigate = useNavigate()
-    useEffect(() => { 
-        var token = localStorage.getItem('token')
-        if(!token)
-        {
-            navigate("/login")
-        }
+    useEffect(() => {
+        localStorage.getItem('token') === null && navigate("/login")
     }, [])
 
     return (
